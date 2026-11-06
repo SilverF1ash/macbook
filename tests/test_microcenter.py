@@ -2,6 +2,11 @@ import datetime as dt
 import unittest
 from unittest.mock import Mock
 import microcenter
+import tempfile
+from pathlib import Path
+import urllib.error
+import watcher
+from unittest.mock import patch
 
 STORE = {'id': '121', 'name': 'Cambridge'}
 
@@ -14,6 +19,17 @@ def page(price=2500, stock='2', memory='64GB Unified Memory', sale=True):
             + ('Save $500.00' if sale else '') + '</li>')
 
 class MicrocenterTests(unittest.TestCase):
+    def test_store_failure_fails_run_even_when_feed_succeeds(self):
+        config = {'microcenter': {'enabled': True, 'stores': [STORE]},
+                  'feeds': [{'name': 'Working', 'url': 'https://example.com/rss'}]}
+        def fetch(url):
+            if 'microcenter.com' in url:
+                raise urllib.error.HTTPError(url, 403, 'Forbidden', {}, None)
+            return b'<rss><channel><item><title>Unrelated</title><link>https://example.com/item</link></item></channel></rss>'
+        with tempfile.TemporaryDirectory() as folder, patch('watcher.fetch', side_effect=fetch):
+            with self.assertRaisesRegex(RuntimeError, 'monitoring incomplete: Cambridge'):
+                watcher.run(config, Path(folder) / 'state.json', dry_run=True)
+
     def run_check(self, text, state, send):
         microcenter.check({'microcenter': {'enabled': True, 'stores': [STORE]}},
                           state, dt.datetime.now(dt.timezone.utc),

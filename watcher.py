@@ -164,6 +164,12 @@ def run(config, state_path, dry_run=False, initialize=False):
         state['seen'] = {k: v for k, v in seen.items() if dt.datetime.fromisoformat(v) >= cutoff}
         save_state(state_path, state)
     LOG.info('Checked %d sources successfully (feeds and stores)', successful)
+    if config.get('microcenter', {}).get('enabled'):
+        failed = [entry['store'] for entry in state.get('microcenter_health', {}).values()
+                  if not entry['ok']]
+        if failed:
+            raise RuntimeError('Micro Center monitoring incomplete: ' + ', '.join(failed)
+                               + '. Other sources were processed; check source errors above.')
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)

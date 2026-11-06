@@ -68,6 +68,7 @@ def check(config, state, now, fetch, send, webhook, save, dry_run=False, initial
     if not settings.get('enabled'):
         return 0
     records = state.setdefault('microcenter', {})
+    health = state.setdefault('microcenter_health', {})
     successful = 0
     for store in settings['stores']:
         try:
@@ -85,8 +86,16 @@ def check(config, state, now, fetch, send, webhook, save, dry_run=False, initial
                 if page <= last:
                     time.sleep(1)
         except Exception as exc:
-            LOG.warning('Micro Center %s unavailable (%s); monitoring incomplete', store['name'], type(exc).__name__)
+            reason = 'HTTP ' + str(exc.code) if hasattr(exc, 'code') else type(exc).__name__
+            health[store['id']] = {'store': store['name'], 'ok': False,
+                                   'error': reason, 'checked_at': now.isoformat()}
+            LOG.warning('Micro Center %s unavailable (%s); monitoring incomplete', store['name'], reason)
+            if not dry_run:
+                save(state)
             continue
+        health[store['id']] = {'store': store['name'], 'ok': True, 'checked_at': now.isoformat()}
+        if not dry_run:
+            save(state)
         successful += 1
         matched = 0
         for card in cards:

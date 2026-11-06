@@ -84,3 +84,9 @@ The `microcenter` section in `config.json` enables direct public listing checks 
 A listing qualifies when it advertises savings, costs at most `target_price_usd`, or its price is below the previously observed price. The optional `max_price_usd` also applies. The first check can alert on existing sales above $3,000; that amount is a target badge, not a hard cap. Each store/product/price is alerted once, including further price drops. State is saved in `state/seen.json`. Open-box offers attached to new product cards are not scanned.
 
 A blocked request, unverified store, missing product cards or excessive pagination generates a source warning; other feeds/stores continue. Check logs for Micro Center source warnings even when the overall run succeeds. A successful Discord setup test does not verify retailer access. Retailer HTML and access rules can change, and access from GitHub runners may differ from a local check. Final stock, prices and AppleCare eligibility require retailer confirmation.
+
+## Micro Center access status
+
+Direct listing requests returned HTTP 403 Forbidden from GitHub-hosted Linux and Windows runners during live diagnostics. Per-store health is recorded in state/seen.json. The main workflow now fails if an enabled store could not be checked, after processing the other sources and saving delivery history. A green RSS check or successful Discord test is not evidence of retailer access.
+
+The existing local execution instructions can be used to test access from your own computer. Local access is not guaranteed, and continuous local monitoring requires that computer to remain awake and online. No proxy, CAPTCHA bypass, paid service, alternative secret destination or self-hosted runner has been configured.
