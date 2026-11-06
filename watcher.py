@@ -116,6 +116,9 @@ def run(config, state_path, dry_run=False, initialize=False):
     webhook = os.getenv('DISCORD_WEBHOOK_URL', '')
     if not dry_run and not initialize and not webhook:
         raise ValueError('DISCORD_WEBHOOK_URL is required; use --dry-run to preview')
+    from microcenter import check as check_microcenter
+    successful += check_microcenter(config, state, now, fetch, send, webhook,
+                                   lambda current: save_state(state_path, current), dry_run, initialize)
     for feed in config['feeds']:
         try:
             entries = list(parse_feed(fetch(feed['url'])))
@@ -160,7 +163,7 @@ def run(config, state_path, dry_run=False, initialize=False):
         cutoff = now - dt.timedelta(days=180)
         state['seen'] = {k: v for k, v in seen.items() if dt.datetime.fromisoformat(v) >= cutoff}
         save_state(state_path, state)
-    LOG.info('Checked %d/%d feeds', successful, len(config['feeds']))
+    LOG.info('Checked %d sources successfully (feeds and stores)', successful)
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)

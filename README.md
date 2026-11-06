@@ -1,6 +1,6 @@
 # 64 GB MacBook Pro Discord Deal Watcher
 
-A personal Python deal-feed monitor that posts to a Discord channel using a webhook. No Discord bot account, paid API, or Python packages needed. **The supplied project is not activated or hosted.**
+A personal Python deal-feed monitor that posts to a Discord channel using a webhook. No Discord bot account, paid API, or Python packages needed. The GitHub Actions workflow is configured to check every 30 minutes; Discord delivery requires the repository secret.
 
 ## What it watches
 
@@ -76,3 +76,11 @@ Five offline tests cover headline filtering, price ambiguity, Atom parsing, dupl
 Reference documentation:
 - Discord webhook API: https://github.com/discord/discord-api-docs/blob/main/developers/resources/webhook.mdx
 - GitHub scheduling: https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
+
+## Direct Micro Center monitoring
+
+The `microcenter` section in `config.json` enables direct public listing checks for Cambridge (121) and North Jersey (075), alongside the RSS feeds. Each check verifies the selected store and scans result pages (maximum 15 per store). It filters for MacBook Pro listings explicitly specifying 64GB memory/RAM and positive stock at that store, excluding used/refurbished/open-box product titles.
+
+A listing qualifies when it advertises savings, costs at most `target_price_usd`, or its price is below the previously observed price. The optional `max_price_usd` also applies. The first check can alert on existing sales above $3,000; that amount is a target badge, not a hard cap. Each store/product/price is alerted once, including further price drops. State is saved in `state/seen.json`. Open-box offers attached to new product cards are not scanned.
+
+A blocked request, unverified store, missing product cards or excessive pagination generates a source warning; other feeds/stores continue. Check logs for Micro Center source warnings even when the overall run succeeds. A successful Discord setup test does not verify retailer access. Retailer HTML and access rules can change, and access from GitHub runners may differ from a local check. Final stock, prices and AppleCare eligibility require retailer confirmation.
