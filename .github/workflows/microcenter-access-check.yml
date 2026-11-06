@@ -1,0 +1,37 @@
+name: Micro Center access check
+on:
+  push:
+    paths:
+      - '.github/workflows/microcenter-access-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  access:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Check public listing access
+        shell: python
+        run: |
+          import urllib.request, urllib.error, subprocess, os
+          for sid in ('121', '075'):
+              url = 'https://www.microcenter.com/search/search_results.aspx?Ntt=macbook%2064gb&storeid=' + sid + '&st-page=1'
+              try:
+                  req = urllib.request.Request(url, headers={'User-Agent': 'MacBookDealWatcher/1.0 (personal RSS reader)'})
+                  with urllib.request.urlopen(req, timeout=25) as r:
+                      data = r.read(5000000).decode('utf-8', errors='replace')
+                      print('PYTHON', sid, r.status, 'cards', data.count('product_wrapper'))
+              except urllib.error.HTTPError as e:
+                  print('PYTHON', sid, 'HTTP', e.code)
+              except Exception as e:
+                  print('PYTHON', sid, type(e).__name__)
+              result = subprocess.run(['curl', '-L', '--max-time', '25', '-s', '-w', '\\nHTTP_STATUS:%{http_code}', url], capture_output=True, text=True)
+              print('CURL', sid, result.stdout[-30:], 'cards', result.stdout.count('product_wrapper'), 'exit', result.returncode)
