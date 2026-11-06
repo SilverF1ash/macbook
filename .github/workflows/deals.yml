@@ -3,6 +3,12 @@ on:
   schedule:
     - cron: '7,37 * * * *'
   workflow_dispatch:
+    inputs:
+      test_discord:
+        description: 'Send a Discord test message instead of checking deals'
+        type: boolean
+        required: false
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -10,19 +16,25 @@ concurrency:
   cancel-in-progress: false
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.12'
+      - name: Send Discord test message
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.test_discord }}
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python watcher.py --test-discord
       - name: Check feeds and notify Discord
+        if: ${{ !inputs.test_discord }}
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python watcher.py
       - name: Persist delivery history even after partial failure
-        if: always()
+        if: ${{ always() && !inputs.test_discord }}
         run: |
           if [ -f state/seen.json ]; then
             git config user.name 'MacBook Deal Watcher'
