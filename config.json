@@ -1,0 +1,14 @@
+{
+  "target_price_usd": 3000,
+  "max_price_usd": null,
+  "allow_used": false,
+  "chips": [],
+  "max_age_days": 7,
+  "feeds": [
+    {"name": "Slickdeals MacBook search", "url": "https://slickdeals.net/newsearch.php?searchin=first&searcharea=deals&search=macbook&rss=1"},
+    {"name": "9to5Toys", "url": "https://9to5toys.com/feed/"},
+    {"name": "MacRumors", "url": "https://feeds.macrumors.com/MacRumors-All"},
+    {"name": "AppleInsider", "url": "https://appleinsider.com/rss/news/"},
+    {"name": "Macworld", "url": "https://www.macworld.com/feed"}
+  ]
+}
