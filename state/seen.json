@@ -1,4 +1,18 @@
 {
   "seen": {},
-  "microcenter": {}
+  "microcenter": {},
+  "microcenter_health": {
+    "121": {
+      "store": "Cambridge",
+      "ok": false,
+      "error": "HTTP 403",
+      "checked_at": "2026-11-06T17:23:13.917071+00:00"
+    },
+    "075": {
+      "store": "North Jersey",
+      "ok": false,
+      "error": "HTTP 403",
+      "checked_at": "2026-11-06T17:23:13.917071+00:00"
+    }
+  }
 }
