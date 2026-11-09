@@ -54,6 +54,20 @@ class MicrocenterTests(unittest.TestCase):
             self.run_check(page(price=2300), state, send)
         self.assertNotIn(2300, state['microcenter']['121:123']['alerted_prices'])
 
+    def test_targeted_store_ignores_other_64gb_models(self):
+        target_store = {'id': '121', 'name': 'Cambridge', 'model_skus': ['Z1ML00055']}
+        state, send = {}, Mock()
+        microcenter.check({'microcenter': {'enabled': True, 'stores': [target_store]}},
+                          state, dt.datetime.now(dt.timezone.utc), lambda url: page(),
+                          send, 'secret', lambda s: None)
+        send.assert_not_called()
+        self.assertEqual(state['microcenter'], {})
+        microcenter.check({'microcenter': {'enabled': True, 'stores': [target_store]}},
+                          state, dt.datetime.now(dt.timezone.utc),
+                          lambda url: page().replace('M4 Max', 'Z1ML00055 M5 Max'),
+                          send, 'secret', lambda s: None)
+        send.assert_called_once()
+
     def test_no_alert_for_wrong_ram_sold_out_or_regular_price(self):
         for text in [page(memory='128GB Unified Memory'), page(stock='0'),
                      page(price=4000, sale=False)]:
