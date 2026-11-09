@@ -36,6 +36,20 @@
       {
         "id": "075",
         "name": "North Jersey"
+      },
+      {
+        "id": "191",
+        "name": "Overland Park",
+        "model_skus": [
+          "Z1ML00055"
+        ]
+      },
+      {
+        "id": "055",
+        "name": "Madison Heights",
+        "model_skus": [
+          "Z1ML00055"
+        ]
       }
     ]
   }
