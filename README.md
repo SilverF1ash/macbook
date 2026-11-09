@@ -79,7 +79,7 @@ Reference documentation:
 
 ## Direct Micro Center monitoring
 
-The `microcenter` section in `config.json` enables direct public listing checks for Cambridge (121) and North Jersey (075), alongside the RSS feeds. Each check verifies the selected store and scans result pages (maximum 15 per store). It filters for MacBook Pro listings explicitly specifying 64GB memory/RAM and positive stock at that store, excluding used/refurbished/open-box product titles.
+The `microcenter` section in `config.json` enables direct public listing checks for Cambridge (121) and North Jersey (075), plus targeted Z1ML00055 checks at Overland Park (191) and Madison Heights (055), alongside the RSS feeds. Each check verifies the selected store and scans result pages (maximum 15 per store). It filters for MacBook Pro listings explicitly specifying 64GB memory/RAM and positive stock at that store; the two added stores alert only for the 14-inch M5 Max/64GB/2TB Z1ML00055, excluding used/refurbished/open-box product titles.
 
 A listing qualifies when it advertises savings, costs at most `target_price_usd`, or its price is below the previously observed price. The optional `max_price_usd` also applies. The first check can alert on existing sales above $3,000; that amount is a target badge, not a hard cap. Each store/product/price is alerted once, including further price drops. State is saved in `state/seen.json`. Open-box offers attached to new product cards are not scanned.
 
