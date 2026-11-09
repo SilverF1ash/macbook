@@ -100,6 +100,8 @@ def check(config, state, now, fetch, send, webhook, save, dry_run=False, initial
         matched = 0
         for card in cards:
             name, text, price = card['name'], card['text'], card['price']
+            if store.get('model_skus') and not any(sku.lower() in name.lower() for sku in store['model_skus']):
+                continue
             if not re.search(r'mac\s*book\s*pro', name, re.I):
                 continue
             if not re.search(r'\b64\s*GB\s+(?:Unified\s+)?(?:Memory|RAM)\b', name, re.I):
