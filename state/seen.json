@@ -6,25 +6,25 @@
       "store": "Cambridge",
       "ok": false,
       "error": "HTTP 403",
-      "checked_at": "2026-11-12T10:10:43.756819+00:00"
+      "checked_at": "2026-11-12T18:32:57.548192+00:00"
     },
     "075": {
       "store": "North Jersey",
       "ok": false,
       "error": "HTTP 403",
-      "checked_at": "2026-11-12T10:10:43.756819+00:00"
+      "checked_at": "2026-11-12T18:32:57.548192+00:00"
     },
     "191": {
       "store": "Overland Park",
       "ok": false,
       "error": "HTTP 403",
-      "checked_at": "2026-11-12T10:10:43.756819+00:00"
+      "checked_at": "2026-11-12T18:32:57.548192+00:00"
     },
     "055": {
       "store": "Madison Heights",
       "ok": false,
       "error": "HTTP 403",
-      "checked_at": "2026-11-12T10:10:43.756819+00:00"
+      "checked_at": "2026-11-12T18:32:57.548192+00:00"
     }
   }
 }
