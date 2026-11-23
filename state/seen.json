@@ -1,30 +1,42 @@
 {
   "seen": {},
-  "microcenter": {},
+  "microcenter": {
+    "075:708929": {
+      "price": 4499.99,
+      "alerted_prices": [
+        4499.99
+      ],
+      "checked_at": "2026-11-23T21:58:52.004480+00:00"
+    },
+    "075:711988": {
+      "price": 3499.99,
+      "alerted_prices": [
+        3499.99
+      ],
+      "checked_at": "2026-11-23T21:58:52.004480+00:00"
+    }
+  },
   "microcenter_health": {
     "121": {
       "store": "Cambridge",
       "ok": false,
-      "error": "HTTP 403",
-      "checked_at": "2026-11-23T09:41:42.112493+00:00"
+      "error": "TimeoutError",
+      "checked_at": "2026-11-23T21:58:52.004480+00:00"
     },
     "075": {
       "store": "North Jersey",
-      "ok": false,
-      "error": "HTTP 403",
-      "checked_at": "2026-11-23T09:41:42.112493+00:00"
+      "ok": true,
+      "checked_at": "2026-11-23T21:58:52.004480+00:00"
     },
     "191": {
       "store": "Overland Park",
-      "ok": false,
-      "error": "HTTP 403",
-      "checked_at": "2026-11-23T09:41:42.112493+00:00"
+      "ok": true,
+      "checked_at": "2026-11-23T21:58:52.004480+00:00"
     },
     "055": {
       "store": "Madison Heights",
-      "ok": false,
-      "error": "HTTP 403",
-      "checked_at": "2026-11-23T09:41:42.112493+00:00"
+      "ok": true,
+      "checked_at": "2026-11-23T21:58:52.004480+00:00"
     }
   }
 }
